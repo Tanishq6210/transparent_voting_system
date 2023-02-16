@@ -4,6 +4,8 @@
 import './App.css';
 import Web3 from 'web3';
 import { useState } from 'react';
+import image from './catt.jpg';
+
 function App() {
     let abi = [
       {
@@ -171,12 +173,8 @@ function App() {
         setVotes_array(result)
         console.log(result)
       })
-    } else {
-      alert( "This page is not reloaded");
-    }
+    } else { }
   }
-
-  
 
   return (
     <div className="App">
@@ -186,14 +184,42 @@ function App() {
         <li><button className="button_m" onClick={connectToMetamask}>{buttonText}</button></li>
       </ul>
     </nav>
-    <main className="App-content">
-      Candidate 1: <label>{vote0}</label><br></br>
-      Candidate 2: <label>{vote1}</label><br></br>
-      Candidate 3: <label>{vote2}</label><br></br>
-	    <button className="button" onClick={giveVote0}>VOTE A</button>
-      <button className="button" onClick={giveVote1}>VOTE B</button>
-      <button className="button" onClick={giveVote2}>VOTE C</button><br></br>
-      <br></br>
+	    
+      <div className="cards">
+        <div className="card">
+          <div className="card-image">
+            <img src={image} alt="Image" />
+          </div>
+          <div className="card-content">
+            <h2 className="card-name">Bloii the poopee</h2>
+            <p className="card-age">20 years old</p>
+            <p className="card-votes">{vote0} votes</p>
+            <button className="button" onClick={giveVote0}>VOTE A</button>    
+          </div>
+        </div>
+        <div className="card">
+          <div className="card-image">
+            <img src={image} alt="Image" />
+          </div>
+          <div className="card-content">
+            <h2 className="card-name">BloiBlo the peepee</h2>
+            <p className="card-age">20 years old</p>
+            <p className="card-votes">{vote1} votes</p>
+            <button className="button" onClick={giveVote1}>VOTE B</button>
+          </div>
+        </div>
+        <div className="card">
+          <div className="card-image">
+            <img src={image} alt="Image" />
+          </div>
+          <div className="card-content">
+            <h2 className="card-name">Blo the peepee</h2>
+            <p className="card-age">20 years old</p>
+            <p className="card-votes">{vote2} votes</p>
+            <button className="button" onClick={giveVote2}>VOTE C</button>  
+          </div>
+        </div>
+      </div>
       <center>
       <table border={1} cellPadding={10} style={{ border: '2px solid black' }}>
         <thead>
@@ -221,10 +247,6 @@ function App() {
     </table>
     </center>
     <br></br>
-      </main>
-    <footer className="App-footer">
-        <p>Footer</p>
-      </footer>
     </div>
   );
 }
