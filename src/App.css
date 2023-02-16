@@ -1,7 +1,10 @@
-.App {
+/* .App {
   text-align: center;
-}
+} */
 
+*{
+  font-family: Montserrat;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -12,6 +15,26 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
+.nav-bar {
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
+
+.nav-bar ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-bar li {
+  margin-right: 16px;
+  cursor: pointer;
+}
+
 
 .App-header {
   background-color: #282c34;
@@ -35,4 +58,90 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.button {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 30px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button_m{
+  background-color: white; /* Green */
+  border: 2px solid #4caf50;
+  color: white;
+  padding: 15px 30px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  color: #000;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f8f8;
+  padding: 1rem;
+}
+
+.header-title {
+  margin: 0;
+}
+
+.header-nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.header-nav-item {
+  margin-right: 1rem;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.App-header {
+  background-color: #222;
+  color: white;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 36px;
+}
+
+.App-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.App-footer {
+  background-color: #222;
+  color: white;
+  padding: 20px;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.App-footer p {
+  margin: 0;
+  text-align: center;
+  font-size: 18px;
 }

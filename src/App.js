@@ -4,7 +4,6 @@
 import './App.css';
 import Web3 from 'web3';
 import { useState } from 'react';
-
 function App() {
     let abi = [
       {
@@ -105,6 +104,8 @@ function App() {
   const [vote1,setVote1] = useState(0);
   const [vote2,setVote2] = useState(0); 
   const [data, setData] = useState("0x66a9633AC8E529B6CcD8E4c752901A71FcDf54A7");
+  const [arr, setVotes_array] = useState([]);
+  const [buttonText, setButtonText] = useState('Connect To Metamask');
 
   function connectToMetamask() {
     if(window.ethereum) {
@@ -112,18 +113,11 @@ function App() {
       .then(res => {
         console.log(res)
         setData(res)
+        setButtonText('Connected to ' + res);
       })
     } else {
       alert("Install Metamask!!")
     }
-  }
-
-  function intitalizeVotes() {
-    console.log("intitalizing Votes..")
-    contract.methods.getVotes().call()
-    .then((result) => {
-        console.log(result)
-    })
   }
 
   function giveVote0() {
@@ -172,37 +166,65 @@ function App() {
           setVote1(result[1])
           setVote2(result[2])
       })
+      contract.methods.getAllVotes().call()
+      .then((result) => {
+        setVotes_array(result)
+        console.log(result)
+      })
     } else {
       alert( "This page is not reloaded");
     }
   }
 
+  
+
   return (
     <div className="App">
-    	Candidate 1: <label>{vote0}</label><br></br>
+    <nav className='nav-bar'>
+      <ul>
+        <li><h2>Transparent Voting System</h2></li>
+        <li><button className="button_m" onClick={connectToMetamask}>{buttonText}</button></li>
+      </ul>
+    </nav>
+    <main className="App-content">
+      Candidate 1: <label>{vote0}</label><br></br>
       Candidate 2: <label>{vote1}</label><br></br>
       Candidate 3: <label>{vote2}</label><br></br>
-	    <button onClick={giveVote0}>VOTE</button>
-      <button onClick={giveVote1}>VOTE</button>
-      <button onClick={giveVote2}>VOTE</button><br></br>
-      <button onClick={connectToMetamask}>CONNECT</button>
-
-      <table>
+	    <button className="button" onClick={giveVote0}>VOTE A</button>
+      <button className="button" onClick={giveVote1}>VOTE B</button>
+      <button className="button" onClick={giveVote2}>VOTE C</button><br></br>
+      <br></br>
+      <center>
+      <table border={1} cellPadding={10} style={{ border: '2px solid black' }}>
         <thead>
-          <tr>
-            <th>From Address</th>
-            <th>To Address</th>
-            <th>Time</th>
+        <tr>
+            <th>FROM ADDRESS</th>
+            <th>TO ADDRESS</th>
+            <th>TIME</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Row 1, Column 1</td>
-            <td>Row 1, Column 2</td>
-            <td>Row 1, Column 3</td>
-          </tr>
+          {
+            arr.map(
+              (info, ind) => {
+                return (
+                  <tr>
+                    <td>{info.from}</td>
+                    <td>{info.to}</td>
+                    <td>{info.time}</td>
+                  </tr>
+                )
+              }
+            )
+          }
         </tbody>
-      </table>
+    </table>
+    </center>
+    <br></br>
+      </main>
+    <footer className="App-footer">
+        <p>Footer</p>
+      </footer>
     </div>
   );
 }
