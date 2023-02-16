@@ -203,4 +203,8 @@ function App() {
           </tr>
         </tbody>
       </table>
- 
+    </div>
+  );
+}
+
+export default App;
