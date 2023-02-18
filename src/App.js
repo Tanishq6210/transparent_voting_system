@@ -9,6 +9,7 @@ import { Auth, useAuth } from "@arcana/auth-react";
 import { ethers } from "ethers"
 
 export default function App() {
+  
   const { user, connect, isLoggedIn, loading, loginWithSocial, provider } = useAuth();
 
     let abi = [
@@ -126,13 +127,13 @@ export default function App() {
       const sig = Provider.getSigner();
       console.log("Signer is: " + sig)
       const contract = new ethers.Contract(contractAddress, abi, sig);
-      // const tx = await contract.giveVote(0);
-      // console.log(tx)
-      // const res = await tx.wait();
-      // console.log("res", res.events[0].args);
-      const tx1 = await contract.getAllVotes();
-      console.log(tx1)
-      setVotes_array(tx1)
+      const tx = await contract.giveVote(0);
+      console.log(tx)
+      const res = await tx.wait();
+      console.log("res", res.events[0].args);
+      // const tx1 = await contract.getAllVotes();
+      // console.log(tx1)
+      // setVotes_array(tx1)
     } catch(err) {
       console.log(err);
     }
@@ -166,41 +167,44 @@ export default function App() {
   //   }
   // }
   
-  // function giveVote0() {
-  //     console.log("Voting 0...")
-  //     contract.methods.giveVote(0)
-  //     .send({
-  //         from:data[0],
-  //     })
-  //     .then((result) => {
-  //       setVote0(result.events.newWave.returnValues.cnt)
-  //         console.log(result);
-  //     })
-  // }
+  async function giveVote0() {
+      console.log("Voting 0...")
+      const Provider = new ethers.providers.Web3Provider(provider);
+      console.log(Provider)
+      const sig = Provider.getSigner();
+      console.log("Signer is: " + sig)
+      const contract = new ethers.Contract(contractAddress, abi, sig);
+      const tx = await contract.giveVote(0);
+      console.log(tx)
+      const res = await tx.wait();
+      console.log("res", res.events[0].args);
+  }
 
-  // function giveVote1() {
-  //   console.log("Voting 1...")
-  //   contract.methods.giveVote(1)
-  //   .send({
-  //       from:data,
-  //   })
-  //   .then((result) => {
-  //     setVote1(result.events.newWave.returnValues.cnt)
-  //       console.log(result);
-  //   })
-  // }
+  async function giveVote1() {
+    console.log("Voting 1...")
+    const Provider = new ethers.providers.Web3Provider(provider);
+      console.log(Provider)
+      const sig = Provider.getSigner();
+      console.log("Signer is: " + sig)
+      const contract = new ethers.Contract(contractAddress, abi, sig);
+      const tx = await contract.giveVote(1);
+      console.log(tx)
+      const res = await tx.wait();
+      console.log("res", res.events[0].args);
+  }
 
-  // function giveVote2() {
-  //   console.log("Voting 2...")
-  //   contract.methods.giveVote(2)
-  //   .send({
-  //       from:data[0],
-  //   })
-  //   .then((result) => {
-  //     setVote2(result.events.newWave.returnValues.cnt)
-  //       console.log(result);
-  //   })
-  // }
+  async function giveVote2() {
+    console.log("Voting 2...")
+    const Provider = new ethers.providers.Web3Provider(provider);
+      console.log(Provider)
+      const sig = Provider.getSigner();
+      console.log("Signer is: " + sig)
+      const contract = new ethers.Contract(contractAddress, abi, sig);
+      const tx = await contract.giveVote(2);
+      console.log(tx)
+      const res = await tx.wait();
+      console.log("res", res.events[0].args);
+  }
 
 
   // if (window.performance) {
@@ -220,7 +224,7 @@ export default function App() {
       </ul>
     </nav>
 	    
-      {/* <div className="cards">
+      <div className="cards">
         <div className="card">
           <div className="card-image">
             <img src={image} alt="Image" />
@@ -254,7 +258,7 @@ export default function App() {
             <button className="button" onClick={giveVote2}>VOTE C</button>  
           </div>
         </div>
-      </div> */}
+      </div>
       <center>
       <table border={1} cellPadding={10} style={{ border: '2px solid black' }}>
         <thead>
