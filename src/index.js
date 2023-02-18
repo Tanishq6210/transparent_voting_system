@@ -3,11 +3,26 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { AuthProvider,CHAIN  } from "@arcana/auth";
+import { ProvideAuth } from "@arcana/auth-react";
+
+const auth = new AuthProvider(`6d9f24e8686c6eaf3ba4fa2d1ebcab4913c15868`, {
+  position: 'left',
+  theme: 'light',
+  alwaysVisible: true,
+  network: 'testnet', // network can be testnet or mainnet - defaults to testnet
+  chainConfig: {
+    chainId: CHAIN.POLYGON_MUMBAI_TESTNET,
+    rpcUrl: 'https://matic-mumbai.chainstacklabs.com',
+  },
+})
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <ProvideAuth provider={auth}>
+        <App />
+    </ProvideAuth>
   </React.StrictMode>
 );
 

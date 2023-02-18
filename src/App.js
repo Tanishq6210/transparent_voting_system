@@ -5,10 +5,11 @@ import './App.css';
 import Web3 from 'web3';
 import { useState } from 'react';
 import image from './catt.jpg';
-import { AuthProvider } from '@arcana/auth'
+import { Auth, useAuth } from "@arcana/auth-react";
+import { ethers } from "ethers"
 
-function App() {
-    const auth = new AuthProvider("6d9f24e8686c6eaf3ba4fa2d1ebcab4913c15868")
+export default function App() {
+  const { user, connect, isLoggedIn, loading, loginWithSocial, provider } = useAuth();
 
     let abi = [
       {
@@ -101,112 +102,125 @@ function App() {
         "constant": true
       }
     ]
-  let contractAddress = "0x6Df1B6dB729C765aa3F7ee8AB07f49366500089B"
-  const web3 = new Web3(Web3.givenProvider);
-  var contract = new web3.eth.Contract(abi, contractAddress)
+  
 
+  // const web3 = new Web3(Web3.givenProvider);
+  // var contract = new web3.eth.Contract(abi, contractAddress)
   const [vote0,setVote0] = useState(0);
   const [vote1,setVote1] = useState(0);
   const [vote2,setVote2] = useState(0); 
   const [data, setData] = useState("0x66a9633AC8E529B6CcD8E4c752901A71FcDf54A7");
   const [arr, setVotes_array] = useState([]);
   const [buttonText, setButtonText] = useState('Connect To Metamask');
+  const [buttonArcana, setButtonArcana] = useState('Connect To Arcana');
 
-  function initialize(){
-    contract.methods.getVotes().call()
-      .then((result) => {
-          setVote0(result[0])
-          setVote1(result[1])
-          setVote2(result[2])
-      })
-      contract.methods.getAllVotes().call()
-      .then((result) => {
-        setVotes_array(result)
-        // console.log(result)
-      })
-  }
+  let contractAddress = "0x6Df1B6dB729C765aa3F7ee8AB07f49366500089B"
 
-  async function connectToMetamask() {
-    // if(window.ethereum) {
-    //   window.ethereum.request({method: 'eth_requestAccounts'})
-    //   .then(res => {
-    //     console.log(res)
-    //     setData(res)
-    //     setButtonText('Connected to ' + res);
-    //     initialize()
-    //   })
-    // } else {
-    //   alert("Install Metamask!!")
-    // }
+  async function connectToArcana() {
+    
     try {
-      await auth.init()
-  
-      const arcanaProvider = await auth.loginWithSocial('google')
-      const provider = new Web3(arcanaProvider)
-      const info = await auth.getUser()
-      setButtonText('Connected to ' + info.address);
-      setData(info.address)
-      await provider.getBlockNumber()
-      // 14983200
-    } catch (e) {
-      // log error
+      await connect();
+      console.log("Connecting to Arcana...")
+      const Provider = new ethers.providers.Web3Provider(provider);
+      console.log(Provider)
+      const sig = Provider.getSigner();
+      console.log("Signer is: " + sig)
+      const contract = new ethers.Contract(contractAddress, abi, sig);
+      // const tx = await contract.giveVote(0);
+      // console.log(tx)
+      // const res = await tx.wait();
+      // console.log("res", res.events[0].args);
+      const tx1 = await contract.getAllVotes();
+      console.log(tx1)
+      setVotes_array(tx1)
+    } catch(err) {
+      console.log(err);
     }
   }
 
-  function giveVote0() {
-      console.log("Voting 0...")
-      contract.methods.giveVote(0)
-      .send({
-          from:data[0],
-      })
-      .then((result) => {
-        setVote0(result.events.newWave.returnValues.cnt)
-          console.log(result);
-      })
-  }
 
-  function giveVote1() {
-    console.log("Voting 1...")
-    contract.methods.giveVote(1)
-    .send({
-        from:data,
-    })
-    .then((result) => {
-      setVote1(result.events.newWave.returnValues.cnt)
-        console.log(result);
-    })
-  }
+  // function initialize(){
+  //   contract.methods.getVotes().call()
+  //     .then((result) => {
+  //         setVote0(result[0])
+  //         setVote1(result[1])
+  //         setVote2(result[2])
+  //     })
+  //     contract.methods.getAllVotes().call()
+  //     .then((result) => {
+  //       setVotes_array(result)
+  //     })
+  // }
 
-  function giveVote2() {
-    console.log("Voting 2...")
-    contract.methods.giveVote(2)
-    .send({
-        from:data[0],
-    })
-    .then((result) => {
-      setVote2(result.events.newWave.returnValues.cnt)
-        console.log(result);
-    })
-  }
+  // async function connectToMetamask() {
+  //   if(window.ethereum) {
+  //     window.ethereum.request({method: 'eth_requestAccounts'})
+  //     .then(res => {
+  //       console.log(res)
+  //       setData(res)
+  //       setButtonText('Connected to ' + res);
+  //       initialize()
+  //     })
+  //   } else {
+  //     alert("Install Metamask!!")
+  //   }
+  // }
+  
+  // function giveVote0() {
+  //     console.log("Voting 0...")
+  //     contract.methods.giveVote(0)
+  //     .send({
+  //         from:data[0],
+  //     })
+  //     .then((result) => {
+  //       setVote0(result.events.newWave.returnValues.cnt)
+  //         console.log(result);
+  //     })
+  // }
+
+  // function giveVote1() {
+  //   console.log("Voting 1...")
+  //   contract.methods.giveVote(1)
+  //   .send({
+  //       from:data,
+  //   })
+  //   .then((result) => {
+  //     setVote1(result.events.newWave.returnValues.cnt)
+  //       console.log(result);
+  //   })
+  // }
+
+  // function giveVote2() {
+  //   console.log("Voting 2...")
+  //   contract.methods.giveVote(2)
+  //   .send({
+  //       from:data[0],
+  //   })
+  //   .then((result) => {
+  //     setVote2(result.events.newWave.returnValues.cnt)
+  //       console.log(result);
+  //   })
+  // }
 
 
-  if (window.performance) {
-    if (performance.navigation.type == 1) {
-      // console.log("Page reloaded successfully")
-      initialize()
-    } else { }
-  }
+  // if (window.performance) {
+  //   if (performance.navigation.type == 1) {
+  //     initialize()
+  //   } else { }
+  // }
+
 
   return (
     <div className="App">
     <nav className='nav-bar'>
-      <ul>
-        <li><h2>Transparent Voting System</h2></li>
-        <li><button className="button_m" onClick={connectToMetamask}>{buttonText}</button></li>
+      <ul>  
+      <li><h2>Transparent Voting System</h2></li>
+      <li><button className="button_m" onClick={connectToArcana}>{buttonArcana}</button></li>
+      {/* <li><button className="button_m" onClick={connectToMetamask}>{buttonText}</button></li> */}
       </ul>
     </nav>
 	    
-      <div className="cards">
+      {/* <div className="cards">
         <div className="card">
           <div className="card-image">
             <img src={image} alt="Image" />
@@ -215,7 +229,7 @@ function App() {
             <h2 className="card-name">Bloii the poopee</h2>
             <p className="card-age">20 years old</p>
             <p className="card-votes">{vote0} votes</p>
-            <button className="button" onClick={giveVote0}>VOTE A</button>    
+            <button className="button" onClick={giveVote0}>VOTE A</button>     
           </div>
         </div>
         <div className="card">
@@ -240,7 +254,7 @@ function App() {
             <button className="button" onClick={giveVote2}>VOTE C</button>  
           </div>
         </div>
-      </div>
+      </div> */}
       <center>
       <table border={1} cellPadding={10} style={{ border: '2px solid black' }}>
         <thead>
@@ -271,5 +285,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
