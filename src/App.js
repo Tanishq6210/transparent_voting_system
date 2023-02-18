@@ -103,7 +103,6 @@ export default function App() {
         "constant": true
       }
     ]
-  
 
   // const web3 = new Web3(Web3.givenProvider);
   // var contract = new web3.eth.Contract(abi, contractAddress)
@@ -127,31 +126,33 @@ export default function App() {
       const sig = Provider.getSigner();
       console.log("Signer is: " + sig)
       const contract = new ethers.Contract(contractAddress, abi, sig);
-      const tx = await contract.giveVote(0);
-      console.log(tx)
-      const res = await tx.wait();
-      console.log("res", res.events[0].args);
-      // const tx1 = await contract.getAllVotes();
-      // console.log(tx1)
-      // setVotes_array(tx1)
+      
+      // const info = await user.getUser()
+      // info.wait();
+      // console.log(info.address)
+      initialize();
+      setButtonArcana("Connected")
     } catch(err) {
       console.log(err);
     }
   }
 
-
-  // function initialize(){
-  //   contract.methods.getVotes().call()
-  //     .then((result) => {
-  //         setVote0(result[0])
-  //         setVote1(result[1])
-  //         setVote2(result[2])
-  //     })
-  //     contract.methods.getAllVotes().call()
-  //     .then((result) => {
-  //       setVotes_array(result)
-  //     })
-  // }
+  async function initialize(){
+    const Provider = new ethers.providers.Web3Provider(provider);
+    console.log(Provider)
+    const sig = Provider.getSigner();
+    console.log("Signer is: " + sig)
+    const contract = new ethers.Contract(contractAddress, abi, sig);
+    const tx = await contract.getVotes();
+    setVote0(tx[0].toNumber())
+    setVote1(tx[1].toNumber())
+    setVote2(tx[2].toNumber())
+    
+    const tx1 = await contract.getAllVotes();
+    console.log(tx1)
+    
+    setVotes_array(tx1)
+  }
 
   // async function connectToMetamask() {
   //   if(window.ethereum) {
@@ -177,7 +178,7 @@ export default function App() {
       const tx = await contract.giveVote(0);
       console.log(tx)
       const res = await tx.wait();
-      console.log("res", res.events[0].args);
+      setVote0(res.events[0].args.cnt.toNumber())
   }
 
   async function giveVote1() {
@@ -190,7 +191,7 @@ export default function App() {
       const tx = await contract.giveVote(1);
       console.log(tx)
       const res = await tx.wait();
-      console.log("res", res.events[0].args);
+      setVote1(res.events[0].args.cnt.toNumber())
   }
 
   async function giveVote2() {
@@ -203,15 +204,15 @@ export default function App() {
       const tx = await contract.giveVote(2);
       console.log(tx)
       const res = await tx.wait();
-      console.log("res", res.events[0].args);
+      setVote2(res.events[0].args.cnt.toNumber())
   }
 
 
-  // if (window.performance) {
-  //   if (performance.navigation.type == 1) {
-  //     initialize()
-  //   } else { }
-  // }
+  if (window.performance) {
+    if (performance.navigation.type == 1) {
+      initialize()
+    } else { }
+  }
 
 
   return (
@@ -274,9 +275,9 @@ export default function App() {
               (info, ind) => {
                 return (
                   <tr>
-                    <td>{info.from}</td>
-                    <td>{info.to}</td>
-                    <td>{info.time}</td>
+                    <td>{info[0]}</td>
+                    <td>{info[2]}</td>
+                    <td>{info[1].toNumber()}</td>
                   </tr>
                 )
               }
