@@ -5,8 +5,11 @@ import './App.css';
 import Web3 from 'web3';
 import { useState } from 'react';
 import image from './catt.jpg';
+import { AuthProvider } from '@arcana/auth'
 
 function App() {
+    const auth = new AuthProvider("6d9f24e8686c6eaf3ba4fa2d1ebcab4913c15868")
+
     let abi = [
       {
         "anonymous": false,
@@ -109,16 +112,44 @@ function App() {
   const [arr, setVotes_array] = useState([]);
   const [buttonText, setButtonText] = useState('Connect To Metamask');
 
-  function connectToMetamask() {
-    if(window.ethereum) {
-      window.ethereum.request({method: 'eth_requestAccounts'})
-      .then(res => {
-        console.log(res)
-        setData(res)
-        setButtonText('Connected to ' + res);
+  function initialize(){
+    contract.methods.getVotes().call()
+      .then((result) => {
+          setVote0(result[0])
+          setVote1(result[1])
+          setVote2(result[2])
       })
-    } else {
-      alert("Install Metamask!!")
+      contract.methods.getAllVotes().call()
+      .then((result) => {
+        setVotes_array(result)
+        // console.log(result)
+      })
+  }
+
+  async function connectToMetamask() {
+    // if(window.ethereum) {
+    //   window.ethereum.request({method: 'eth_requestAccounts'})
+    //   .then(res => {
+    //     console.log(res)
+    //     setData(res)
+    //     setButtonText('Connected to ' + res);
+    //     initialize()
+    //   })
+    // } else {
+    //   alert("Install Metamask!!")
+    // }
+    try {
+      await auth.init()
+  
+      const arcanaProvider = await auth.loginWithSocial('google')
+      const provider = new Web3(arcanaProvider)
+      const info = await auth.getUser()
+      setButtonText('Connected to ' + info.address);
+      setData(info.address)
+      await provider.getBlockNumber()
+      // 14983200
+    } catch (e) {
+      // log error
     }
   }
 
@@ -138,7 +169,7 @@ function App() {
     console.log("Voting 1...")
     contract.methods.giveVote(1)
     .send({
-        from:data[0],
+        from:data,
     })
     .then((result) => {
       setVote1(result.events.newWave.returnValues.cnt)
@@ -161,18 +192,8 @@ function App() {
 
   if (window.performance) {
     if (performance.navigation.type == 1) {
-      console.log("Page reloaded successfully")
-      contract.methods.getVotes().call()
-      .then((result) => {
-          setVote0(result[0])
-          setVote1(result[1])
-          setVote2(result[2])
-      })
-      contract.methods.getAllVotes().call()
-      .then((result) => {
-        setVotes_array(result)
-        console.log(result)
-      })
+      // console.log("Page reloaded successfully")
+      initialize()
     } else { }
   }
 
