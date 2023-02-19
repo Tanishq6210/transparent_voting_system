@@ -24,8 +24,10 @@ Here we have implemented targeted notifications, and as soon as the user casts a
 >During the development of our project, Clear Vote, our team faced several challenges. One of the major challenges we encountered was integrating with Arcana, which we planned to use for authentication. When we started integrating with Arcana, we faced many errors, which caused significant delays in the development process. The errors we encountered were mainly due to the lack of familiarity with the Arcana documentation and its APIs. As a result, we had to go through the documentation several times to understand how to integrate our project with Arcana.
 >> Another challenge was to integrate and deploy the smart contract on the Hyperspace Test Network, provided by FileCoin. This is because Arcana and PushProtocol do not support Hyperspace Test Network. So to overcome this issue, we deployed it separately on the remix ide and continued our working project separately with Goerli Test Network.
 
-## FileCoin Hyperspace TestNetwork deployed Contract address: 0xd9145CCE52D386f254917e481eB44e9943F39138
-## Goerli Test Network deployed Contract Address: 0xbcBBF00Ce07934940075f8ce73a684cB0093Ba44
+### FileCoin Hyperspace TestNetwork deployed Contract Address: 
+0xd9145CCE52D386f254917e481eB44e9943F39138
+### Goerli Test Network deployed Contract Address: 
+0xbcBBF00Ce07934940075f8ce73a684cB0093Ba44
 
 ## How to Run ?
 Add .env file and add Private Key and mnemonic
