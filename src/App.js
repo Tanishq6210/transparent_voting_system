@@ -238,7 +238,7 @@ export default function App() {
     await user.address;
     if(user.address != null) {
       setData(user.address)
-      setButtonArcana("Welcome " + user.address)
+      setButtonArcana("Welcome " + user.name + " ( " + user.address + " )")
     }
     
     const tx1 = await contract.getAllVotes();
