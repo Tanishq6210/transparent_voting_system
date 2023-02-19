@@ -7,6 +7,7 @@ import { useState } from 'react';
 import image from './catt.jpg';
 import { Auth, useAuth } from "@arcana/auth-react";
 import { ethers } from "ethers"
+import * as PushAPI from "@pushprotocol/restapi";
 
 export default function App() {
   
@@ -114,7 +115,61 @@ export default function App() {
   const [buttonText, setButtonText] = useState('Connect To Metamask');
   const [buttonArcana, setButtonArcana] = useState('Connect To Arcana');
 
-  let contractAddress = "0x6Df1B6dB729C765aa3F7ee8AB07f49366500089B"
+  // let contractAddress = "0x6Df1B6dB729C765aa3F7ee8AB07f49366500089B"
+  let contractAddress = "0xbcBBF00Ce07934940075f8ce73a684cB0093Ba44"
+
+
+  async function opt_in() {
+    const Provider = new ethers.providers.Web3Provider(provider);
+      
+    const signer = Provider.getSigner();
+
+    await PushAPI.channels.subscribe({
+      signer: signer,
+      channelAddress: 'eip155:5:0x66a9633AC8E529B6CcD8E4c752901A71FcDf54A7', // channel address in CAIP
+      userAddress: 'eip155:5:0xd85A74726DE0e9735018De2c69d9350B91D8F094', // user address in CAIP
+      onSuccess: () => {
+       console.log('opt in success');
+       alert("OptedIn Successfully!!")
+      },
+      onError: (err) => {
+        console.error("Error is:" + err.message);
+      },
+      env: 'staging'
+    })
+    
+  }
+
+  async function sendNotification() {
+    const Provider = new ethers.providers.Web3Provider(provider);
+    const signer = Provider.getSigner();
+
+    await PushAPI.payloads.sendNotification({
+      signer,
+      type: 3, // target
+      identityType: 2, // direct payload
+      notification: {
+        title: `[SDK-TEST] notification TITLE:`,
+        body: `[sdk-test] notification BODY`
+      },
+      payload: {
+        title: `[sdk-test] payload title`,
+        body: `Hello`,
+        cta: '',
+        img: ''
+      },
+      recipients: 'eip155:5:0xd85A74726DE0e9735018De2c69d9350B91D8F094', // recipient address
+      channel: 'eip155:5:0x66a9633AC8E529B6CcD8E4c752901A71FcDf54A7', // your channel address
+      onSuccess: () => {
+        console.log('opt in success');
+        alert("OptedIn Successfully!!")
+       },
+       onError: (err) => {
+         console.error("Error is:" + err.message);
+       },
+      env: 'staging'
+    });
+  }
 
   async function connectToArcana() {
     
@@ -127,11 +182,13 @@ export default function App() {
       console.log("Signer is: " + sig)
       const contract = new ethers.Contract(contractAddress, abi, sig);
       
-      // const info = await user.getUser()
-      // info.wait();
       // console.log(info.address)
       initialize();
+      console.log("Opting in to Push API...")
+      opt_in();
+      // sendNotification();
       setButtonArcana("Connected to Arcana")
+      
     } catch(err) {
       console.log(err);
     }
@@ -154,14 +211,15 @@ export default function App() {
     setVotes_array(tx1)
   }
 
-  // async function connectToMetamask() {
+  // function connectToMetamask() {
   //   if(window.ethereum) {
   //     window.ethereum.request({method: 'eth_requestAccounts'})
   //     .then(res => {
   //       console.log(res)
-  //       setData(res)
   //       setButtonText('Connected to ' + res);
-  //       initialize()
+  //       console.log(res)
+  //       // initialize()
+  //       opt_in(res)
   //     })
   //   } else {
   //     alert("Install Metamask!!")
@@ -178,7 +236,7 @@ export default function App() {
       const tx = await contract.giveVote(0);
       console.log(tx)
       const res = await tx.wait();
-      setVote0(res.events[0].args.cnt.toNumber())
+      initialize()
   }
 
   async function giveVote1() {
@@ -191,7 +249,7 @@ export default function App() {
       const tx = await contract.giveVote(1);
       console.log(tx)
       const res = await tx.wait();
-      setVote1(res.events[0].args.cnt.toNumber())
+      initialize()
   }
 
   async function giveVote2() {
@@ -204,7 +262,7 @@ export default function App() {
       const tx = await contract.giveVote(2);
       console.log(tx)
       const res = await tx.wait();
-      setVote2(res.events[0].args.cnt.toNumber())
+      initialize()
   }
 
 

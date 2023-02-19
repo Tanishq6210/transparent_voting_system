@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@truffle/hdwallet-provider": "^2.1.6"
+    "@pushprotocol/restapi": "^0.6.1",
+    "@truffle/hdwallet-provider": "^2.1.6",
+    "ethers": "^5.7.2"
   }
 }

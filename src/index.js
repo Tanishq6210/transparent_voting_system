@@ -12,8 +12,8 @@ const auth = new AuthProvider(`6d9f24e8686c6eaf3ba4fa2d1ebcab4913c15868`, {
   alwaysVisible: true,
   network: 'testnet', // network can be testnet or mainnet - defaults to testnet
   chainConfig: {
-    chainId: CHAIN.POLYGON_MUMBAI_TESTNET,
-    rpcUrl: 'https://matic-mumbai.chainstacklabs.com',
+    chainId: CHAIN.ETHEREUM_GOERLI,
+    rpcUrl: 'https://goerli.infura.io/v3/4ffa71b634634a8ba943c8fcce4a275a',
   },
 })
 
