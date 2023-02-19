@@ -7,8 +7,8 @@ import { AuthProvider,CHAIN  } from "@arcana/auth";
 import { ProvideAuth } from "@arcana/auth-react";
 
 const auth = new AuthProvider(`6d9f24e8686c6eaf3ba4fa2d1ebcab4913c15868`, {
-  position: 'left',
-  theme: 'light',
+  position: 'right',
+  theme: 'dark',
   alwaysVisible: true,
   network: 'testnet', // network can be testnet or mainnet - defaults to testnet
   chainConfig: {

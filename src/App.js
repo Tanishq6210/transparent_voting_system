@@ -131,7 +131,7 @@ export default function App() {
       // info.wait();
       // console.log(info.address)
       initialize();
-      setButtonArcana("Connected")
+      setButtonArcana("Connected to Arcana")
     } catch(err) {
       console.log(err);
     }
@@ -216,6 +216,7 @@ export default function App() {
 
 
   return (
+    
     <div className="App">
     <nav className='nav-bar'>
       <ul>  
@@ -261,7 +262,7 @@ export default function App() {
         </div>
       </div>
       <center>
-      <table border={1} cellPadding={10} style={{ border: '2px solid black' }}>
+      <table className="table" border={1.5} cellPadding={10} style={{ border: '2px solid black' }}>
         <thead>
         <tr>
             <th>FROM ADDRESS</th>
