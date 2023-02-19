@@ -127,7 +127,7 @@ export default function App() {
     await PushAPI.channels.subscribe({
       signer: signer,
       channelAddress: 'eip155:5:0x66a9633AC8E529B6CcD8E4c752901A71FcDf54A7', // channel address in CAIP
-      userAddress: 'eip155:5:0xd85A74726DE0e9735018De2c69d9350B91D8F094', // user address in CAIP
+      userAddress: 'eip155:5:' + data, // user address in CAIP
       onSuccess: () => {
        console.log('opt in success');
        alert("OptedIn Successfully!!")
@@ -243,6 +243,7 @@ export default function App() {
     
     const tx1 = await contract.getAllVotes();
     setVotes_array(tx1)
+    opt_in()
   }
 
   // function connectToMetamask() {
