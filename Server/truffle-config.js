@@ -46,7 +46,7 @@
 
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 const HDWalletProvider = require('@truffle/hdwallet-provider');
-const mnemonic = "spider quit security wolf security cave control vital decide sunny bless tuition";
+const mnemonic = process.env.MNEMONIC
 
 
 module.exports = {

@@ -141,7 +141,7 @@ export default function App() {
   }
 
   async function sendNotification(message) {
-    const PK = '69e51a9f0c93ff5c52f66795b1434bf07ca827e412b38cfa52b3293ffc816c2e'; // channel private key
+    const PK = process.env.PRIV_KEY; // channel private key
     const Pkey = `0x${PK}`;
     const signer = new ethers.Wallet(Pkey);
 
@@ -184,7 +184,7 @@ export default function App() {
       // console.log(info.address)
       initialize();
       console.log("user" + JSON.stringify(user))
-      // opt_in();
+      opt_in();
       // sendNotification();
       // fetchSubscribers()
       // getNotifications()
@@ -195,26 +195,6 @@ export default function App() {
     }
   }
 
-  async function fetchSubscribers() {
-    console.log("Fetching Subscribers...")
-    const subscribers = await PushAPI.user.getSubscribers({
-      channel: 'eip155:5:0x66a9633AC8E529B6CcD8E4c752901A71FcDf54A7', // channel address in CAIP
-      page: 1, // Optional, defaults to 1
-      limit: 10, // Optional, defaults to 10
-      env: 'staging' // Optional, defaults to 'prod'
-    });
-    console.log(subscribers);
-    console.log("Fetched----------------------- ")
-  }
-
-  async function getUserSubscribers() {
-    const subscriptions = await PushAPI.user.getSubscriptions({
-      user: 'eip155:5:0xd85A74726DE0e9735018De2c69d9350B91D8F094', // user address in CAIP
-      env: 'staging'
-    });
-    console.log("Subscriptions---------")
-    console.log(subscriptions)
-  }
 
   async function getUserNotification() {
     const notifications = await PushAPI.user.getFeeds({
@@ -238,12 +218,12 @@ export default function App() {
     await user.address;
     if(user.address != null) {
       setData(user.address)
-      setButtonArcana("Welcome " + user.name + " ( " + user.address + " )")
+      setButtonArcana("Welcome, " + user.name + " ( " + user.address + " )")
     }
     
     const tx1 = await contract.getAllVotes();
     setVotes_array(tx1)
-    opt_in()
+    // opt_in()
   }
 
   // function connectToMetamask() {
@@ -272,6 +252,7 @@ export default function App() {
       setVote0(res.events[0].args[3].toNumber())
       let message = "You have voted for Candidate A: " + res.events[0].args[2] + " successfully.";
       sendNotification(message)
+      initialize()
   }
 
   async function giveVote1() {
@@ -285,6 +266,7 @@ export default function App() {
       setVote1(res.events[0].args[3].toNumber())
       let message = "You have voted for Candidate B: " + res.events[0].args[2] + " successfully.";
       sendNotification(message)
+      initialize()
   }
 
   async function giveVote2() {
@@ -298,6 +280,7 @@ export default function App() {
       setVote2(res.events[0].args[3].toNumber())
       let message = "You have voted for Candidate C: " + res.events[0].args[2] + " successfully.";
       sendNotification(message)
+      initialize()
   }
 
 
@@ -387,6 +370,7 @@ export default function App() {
       <button className="button" onClick={getUserNotification}>Check Notifications</button>
     </center>
     <center>
+      <br></br>
       <table className="table" border={1.5} cellPadding={10} style={{ border: '2px solid black' }}>
         <thead>
         <tr>
