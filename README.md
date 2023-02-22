@@ -6,11 +6,6 @@ Member | Role
 Tanishq Tyagi   | Team Lead (Blockchain Developer)
 Priyanka  |  Blockchain Developer
 
-
-##  Overview of the Project
-
->An app that will check your body posture while you are doing an exercise and show how accurate the posture is.
-
 ##  Our Project
 
 Our project, ClearVote uses the Ethereum blockchain platform and Ether.js library. To create smart contracts we have used the Solidity programming language. These smart contracts define the rules of the voting process, including eligibility criteria, voting procedures, and result calculation.
